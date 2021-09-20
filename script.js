@@ -1,6 +1,6 @@
 class Birb{
 
-  constructor(x, y, w, h, v, a, c, cd) {
+  constructor(x, y, w, h, v, a, c, cd, mousePress) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -9,6 +9,7 @@ class Birb{
     this.a = a;
     this.c = c; 
     this.cd = cd;
+    this.mousePress = mousePress;
   }
 
 
@@ -21,22 +22,14 @@ class Birb{
       this.v = this.v * this.a;
     }
 
-    
-
-    if (this.cd == 0){
-      if (keyIsPressed === true && keyCode === 32) {
-        this.cd = 10 ;
-        this.v = 1;
-      }
+    if (mousePress === true){
+      this.cd = 8;
+      this.v = 1;
     }
-    
-    if (this.cd > 0){
-      
-      if (this.cd > 5) {
-        this.y -= 10;
-      }
 
-      this.cd -= 1
+    if (this.cd > 0){
+      this.y -= 10;
+      this.cd -= 1;
     } else {
       this.y += this.v;
     }
@@ -58,14 +51,13 @@ class Birb{
 }
 
 
-var birb, by
-
 
 function setup() {
   createCanvas(500, 500);
   cd = 0
-  birb = new Birb(100, 50, 20, 20, 1, 1.05, "yellow", cd)
-
+  mousePress = false;
+  birb = new Birb(100, 50, 20, 20, 1, 1.05, "yellow", cd, mousePress)
+  
 }
 
 function draw() {
@@ -73,12 +65,9 @@ function draw() {
   
   
   birb.draw();
-
+  mousePress = false;
 }
 
-//function keyPressed() {
-  //if (keyCode === UP_ARROW) {
-    //by -= 20;
-  //}
-  //return false;
-//}
+function mousePressed() {
+  mousePress = true;
+}
