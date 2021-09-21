@@ -12,13 +12,12 @@ class Birb{
     this.mousePress = mousePress;
   }
 
-
   draw() {
     fill(this.c);
     //noStroke();
     ellipse(this.x, this.y, this.w, this.h)
     
-    if (this.v < 10){
+    if (this.v < 15){
       this.v = this.v * this.a;
     }
 
@@ -33,8 +32,6 @@ class Birb{
     } else {
       this.y += this.v;
     }
-  
-
     
     if (this.y > height - (this.h / 2)|| this.y < (this.h/2)) {
       if (this.y > height - (this.h/2)) {
@@ -43,10 +40,26 @@ class Birb{
         this.y = (this.h/2);
       }
     }
+  }
+}
 
+class Pipes {
+  constructor(x, h, w, dis, c) {
+    this.x = x;
+    this.h = h;
+    this.w = w;
+    this.dis = dis;
+    this.c = c;
+    pipeStart = this.h + this.dis;
+    pipeLength = height - pipeStart;
+  }
   
-
-
+  draw() {
+    fill(this.c);
+    //noStroke();
+    
+    rect(this.x, 0, this.w, this.h)
+    rect(this.x, pipeStart, this.w, pipeLength)
   }
 }
 
@@ -54,9 +67,14 @@ class Birb{
 
 function setup() {
   createCanvas(500, 500);
+
   cd = 0
+  pipeStart = 0
+  pipeLength = 0
   mousePress = false;
+
   birb = new Birb(100, 50, 20, 20, 1, 1.05, "yellow", cd, mousePress)
+  pipe = new Pipes(250, 150, 50, 100, "green")
   
 }
 
@@ -65,6 +83,7 @@ function draw() {
   
   
   birb.draw();
+  pipe.draw();
   mousePress = false;
 }
 
