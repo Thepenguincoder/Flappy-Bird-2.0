@@ -50,8 +50,8 @@ class Pipes {
     this.w = w;
     this.dis = dis;
     this.c = c;
-    pipeStart = this.h + this.dis;
-    pipeLength = height - pipeStart;
+    this.pipeStart = this.h + this.dis;
+    this.pipeLength = height - this.pipeStart;
   }
   
   draw() {
@@ -59,7 +59,7 @@ class Pipes {
     //noStroke();
     
     rect(this.x, 0, this.w, this.h)
-    rect(this.x, pipeStart, this.w, pipeLength)
+    rect(this.x, this.pipeStart, this.w, this.pipeLength)
   }
 }
 
@@ -69,8 +69,6 @@ function setup() {
   createCanvas(500, 500);
 
   cd = 0
-  pipeStart = 0
-  pipeLength = 0
   mousePress = false;
 
   birb = new Birb(100, 50, 20, 20, 1, 1.05, "yellow", cd, mousePress)
