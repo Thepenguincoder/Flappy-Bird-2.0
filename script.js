@@ -1,5 +1,5 @@
 class Birb{
-
+  
   constructor(x, y, w, h, v, a, c, cd, mousePress) {
     this.x = x;
     this.y = y;
@@ -70,17 +70,18 @@ class Pipes {
 }
 
 var pipes = [];
-var sprite;
-let img;
-
 
 function preload(){
   img1 = loadImage('imgs/birb21.png');
   img2 = loadImage('imgs/treeTrunk.jpg');
   img3 = loadImage('imgs/forest-day.png');
+  flap = loadSound('sounds/flap.mp3');
+  song = loadSound('sounds/ofortuna.mp3');
 }
 
 function setup() {
+  flap.setVolume(10);
+  song.loop();
   createCanvas(500, 500);
   timer = 120;
   dis = 150;
@@ -92,6 +93,9 @@ function setup() {
   pipe = new Pipes(500, 150, 50, dis, "green")
   pipes.push(pipe);
 }
+
+
+
 
 function draw() {
 	background(img3);  
@@ -111,5 +115,10 @@ function draw() {
 }
 
 function mousePressed() {
-  mousePress = true;
+  if(mousePress = true);
+    flap.play();
+    
 }
+
+// moet wel ongeveer even hard als het flap geluidje ik ga mn best doen
+//ik ben beniewd, ik ga later wel weer inchecken, ben namelijk eigenlijk engels aan eht doen
