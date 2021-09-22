@@ -15,13 +15,16 @@ class Birb{
   draw() {
     fill(this.c);
     //noStroke();
-    rect(this.x, this.y, this.w, this.h)
-    image(img, this.x, this.y, this.w, this.h);
+    //rect(this.x, this.y, this.w, this.h);
+    
+    image(img1, this.x, this.y, this.w, this.h);
     
     
     if (this.v < 15){
       this.v = this.v * this.a;
     }
+
+
 
     if (mousePress === true){
       this.cd = 8;
@@ -60,26 +63,29 @@ class Pipes {
     fill(this.c);
     //noStroke();
     
-    rect(this.x, 0, this.w, this.h)
-    rect(this.x, this.pipeStart, this.w, this.pipeLength)
+    image(img2, this.x, 0, this.w, this.h)
+    image(img2, this.x, this.pipeStart, this.w, this.pipeLength)
     this.x -= 2;
-
-  }
+  } 
 }
 
 var pipes = [];
+var sprite;
 let img;
 
+
 function preload(){
-  img = loadImage('birb15.png');
-  img2 = loadImage('background.jpg');
+  img1 = loadImage('imgs/birb21.png');
+  img2 = loadImage('imgs/treeTrunk.jpg');
+  img3 = loadImage('imgs/forest-day.png');
 }
 
 function setup() {
   createCanvas(500, 500);
   timer = 120;
+  dis = 150;
   cd = 0
-  dis = 175;
+  h = 0
   mousePress = false;
 
   birb = new Birb(100, 50, 50, 50, 1, 1.05, "white", cd, mousePress)
@@ -88,9 +94,9 @@ function setup() {
 }
 
 function draw() {
-	background(img2);  
+	background(img3);  
   if (timer <= 0){
-    let h = Math.floor(Math.random() * 350) + 1;
+    let h = Math.floor(Math.random() * 300) + 25;
     pipe = new Pipes(500, h, 50, dis, "green")
     pipes.push(pipe);
     timer = 120;
