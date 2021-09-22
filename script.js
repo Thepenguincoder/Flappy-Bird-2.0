@@ -15,7 +15,9 @@ class Birb{
   draw() {
     fill(this.c);
     //noStroke();
-    ellipse(this.x, this.y, this.w, this.h)
+    rect(this.x, this.y, this.w, this.h)
+    image(img, this.x, this.y, this.w, this.h);
+    
     
     if (this.v < 15){
       this.v = this.v * this.a;
@@ -33,11 +35,11 @@ class Birb{
       this.y += this.v;
     }
     
-    if (this.y > height - (this.h / 2)|| this.y < (this.h/2)) {
-      if (this.y > height - (this.h/2)) {
-       this.y = height - (this.h/2);
-      } else if ( this.y < (this.h/2)){
-        this.y = (this.h/2);
+    if (this.y > height - this.h || this.y < 0) {
+      if (this.y > height - this.h) {
+       this.y = height - this.h;
+      } else if ( this.y < 0){
+        this.y = 0;
       }
     }
   }
@@ -66,21 +68,27 @@ class Pipes {
 }
 
 var pipes = [];
+let img;
+
+function preload(){
+  img = loadImage('birb15.png');
+  img2 = loadImage('background.jpg');
+}
 
 function setup() {
   createCanvas(500, 500);
   timer = 120;
   cd = 0
-  dis = 125;
+  dis = 175;
   mousePress = false;
 
-  birb = new Birb(100, 50, 20, 20, 1, 1.05, "yellow", cd, mousePress)
+  birb = new Birb(100, 50, 50, 50, 1, 1.05, "white", cd, mousePress)
   pipe = new Pipes(500, 150, 50, dis, "green")
   pipes.push(pipe);
 }
 
 function draw() {
-	background(225);  
+	background(img2);  
   if (timer <= 0){
     let h = Math.floor(Math.random() * 350) + 1;
     pipe = new Pipes(500, h, 50, dis, "green")
@@ -90,7 +98,7 @@ function draw() {
     timer -= 1;
   }
   
-  
+ 
   birb.draw();
   pipes.forEach(pipe => pipe.draw());
   mousePress = false;
