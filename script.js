@@ -60,28 +60,39 @@ class Pipes {
     
     rect(this.x, 0, this.w, this.h)
     rect(this.x, this.pipeStart, this.w, this.pipeLength)
+    this.x -= 2;
+
   }
 }
 
-
+var pipes = [];
 
 function setup() {
   createCanvas(500, 500);
-
+  timer = 120;
   cd = 0
+  dis = 125;
   mousePress = false;
 
   birb = new Birb(100, 50, 20, 20, 1, 1.05, "yellow", cd, mousePress)
-  pipe = new Pipes(250, 150, 50, 100, "green")
-  
+  pipe = new Pipes(500, 150, 50, dis, "green")
+  pipes.push(pipe);
 }
 
 function draw() {
 	background(225);  
+  if (timer <= 0){
+    let h = Math.floor(Math.random() * 350) + 1;
+    pipe = new Pipes(500, h, 50, dis, "green")
+    pipes.push(pipe);
+    timer = 120;
+  } else {
+    timer -= 1;
+  }
   
   
   birb.draw();
-  pipe.draw();
+  pipes.forEach(pipe => pipe.draw());
   mousePress = false;
 }
 
