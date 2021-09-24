@@ -34,7 +34,7 @@ class Birb{
 
 
     if (mousePress === true){
-      this.cd = 8;
+      this.cd = 6;
       this.v = 1;
     }
 
@@ -66,13 +66,13 @@ class Pipes {
     this.pipeLength = height - this.pipeStart;
   }
 
-  collision(){
-    if (this.x >= 50 && this.x <= 250) {
-      return true
-    } else {
-      return false
-    }
-  }
+  //collision(){
+    //if (this.x >= 50 && this.x <= 250) {
+      //return true
+    //} else {
+      //return false
+    //}
+  //}
   
   draw() {
     fill(this.c);
@@ -103,6 +103,7 @@ function setup() {
   cd = 0
   h = 0
   mousePress = false;
+  gameStop = false
 
 
   birb = new Birb(100, 50, 50, 50, 1, 1.05, "white", cd, mousePress)
@@ -114,7 +115,44 @@ function setup() {
 
 
 function draw() {
-	background(img3);  
+  if (gameStop == false){
+    mainGame()
+  } else{
+    background(img1)
+  }
+}
+
+
+
+
+function mousePressed() {
+  if (gameStop == false){
+    birb.flap();
+  }
+    
+}
+
+function isHit(){
+  for (let i = 0; i < pipes.length; i++){
+    thisPipe = pipes[i]
+    if (thisPipe.x <= (birb.x + birb.w) && thisPipe.x >= (birb.x - birb.w)){
+      if (birb.y <= thisPipe.h || (birb.y + birb.h) >= thisPipe.pipeStart){
+        rect(50,50,50,50)
+        gameStop = true
+      }
+    }
+      
+    //}
+    //if (thisPipe.collision()){
+      //rect( 450,50,50,50)
+    //}
+    
+  }
+}
+
+
+function mainGame(){
+  background(img3);  
   if (timer <= 0){
     let h = Math.floor(Math.random() * 300) + 25;
     pipe = new Pipes(500, h, 50, dis, "green")
@@ -135,26 +173,4 @@ function draw() {
   birb.draw();
   pipes.forEach(pipe => pipe.draw());
   mousePress = false;
-}
-
-
-
-
-function mousePressed() {
-  if(mousePress = true);
-    birb.flap();
-    
-}
-
-function isHit(){
-  for (let i = 0; i < pipes.length; i++){
-    thisPipe = pipes[i]
-    if (thisPipe.x <= 150 && thisPipe.x >= 50){
-      rect(50,50,50,50)
-    }
-    if (thisPipe.collision()){
-      rect( 450,50,50,50)
-    }
-    
-  }
 }
