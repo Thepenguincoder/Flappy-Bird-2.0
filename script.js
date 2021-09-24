@@ -34,7 +34,7 @@ class Birb{
 
 
     if (mousePress === true){
-      this.cd = 6;
+      this.cd = 8;
       this.v = 1;
     }
 
