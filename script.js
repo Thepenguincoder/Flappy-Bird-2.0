@@ -14,7 +14,7 @@ class Birb{
 
 
   flap(){
-    this.cd = 8;
+    this.cd = 6;
     this.v = 1;
     flap.play()
   }
@@ -98,7 +98,7 @@ function setup() {
   flap.setVolume(10);
   //song.loop();
   createCanvas(500, 500);
-  timer = 120;
+  timer = 30;
   dis = 150;
   cd = 0
   h = 0
@@ -107,8 +107,8 @@ function setup() {
 
 
   birb = new Birb(100, 50, 50, 50, 1, 1.05, "white", cd, mousePress)
-  pipe = new Pipes(500, 150, 50, dis, "green")
-  pipes.push(pipe);
+  //pipe = new Pipes(500, 150, 50, dis, "green")
+  //pipes.push(pipe);
 }
 
 
@@ -119,7 +119,10 @@ function draw() {
     mainGame()
   } else{
     background(img1)
+    
+
   }
+  
 }
 
 
@@ -128,6 +131,10 @@ function draw() {
 function mousePressed() {
   if (gameStop == false){
     birb.flap();
+  } else if (gameStop == true){
+    gameStop = false
+    pipes = []
+    setup()
   }
     
 }
