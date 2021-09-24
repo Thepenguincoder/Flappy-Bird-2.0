@@ -12,6 +12,13 @@ class Birb{
     this.mousePress = mousePress;
   }
 
+
+  flap(){
+    this.cd = 8;
+    this.v = 1;
+    flap.play()
+  }
+
   draw() {
     fill(this.c);
     //noStroke();
@@ -58,6 +65,14 @@ class Pipes {
     this.pipeStart = this.h + this.dis;
     this.pipeLength = height - this.pipeStart;
   }
+
+  collision(){
+    if (this.x >= 50 && this.x <= 250) {
+      return true
+    } else {
+      return false
+    }
+  }
   
   draw() {
     fill(this.c);
@@ -76,18 +91,19 @@ function preload(){
   img2 = loadImage('imgs/treeTrunk.jpg');
   img3 = loadImage('imgs/forest-day.png');
   flap = loadSound('sounds/flap.mp3');
-  song = loadSound('sounds/ofortuna.mp3');
+  //song = loadSound('sounds/ofortuna.mp3');
 }
 
 function setup() {
   flap.setVolume(10);
-  song.loop();
+  //song.loop();
   createCanvas(500, 500);
   timer = 120;
   dis = 150;
   cd = 0
   h = 0
   mousePress = false;
+
 
   birb = new Birb(100, 50, 50, 50, 1, 1.05, "white", cd, mousePress)
   pipe = new Pipes(500, 150, 50, dis, "green")
@@ -107,7 +123,22 @@ function draw() {
   } else {
     timer -= 1;
   }
+
+  if (pipes.length >= 5) {
+    pipes.splice(0,1)
+  }
   
+  for (let i = 0; i < pipes.length; i++){
+    thisPipe = pipes[i]
+    if (thisPipe.x <= 150 && thisPipe.x >= 50){
+      rect(50,50,50,50)
+    }
+    if (thisPipe.collision()){
+      rect( 450,50,50,50)
+    }
+    
+    
+  }
  
   birb.draw();
   pipes.forEach(pipe => pipe.draw());
@@ -116,9 +147,7 @@ function draw() {
 
 function mousePressed() {
   if(mousePress = true);
-    flap.play();
+    birb.flap();
     
 }
 
-// moet wel ongeveer even hard als het flap geluidje ik ga mn best doen
-//ik ben beniewd, ik ga later wel weer inchecken, ben namelijk eigenlijk engels aan eht doen
