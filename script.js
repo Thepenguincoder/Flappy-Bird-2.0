@@ -128,6 +128,25 @@ function draw() {
     pipes.splice(0,1)
   }
   
+
+  isHit()
+
+
+  birb.draw();
+  pipes.forEach(pipe => pipe.draw());
+  mousePress = false;
+}
+
+
+
+
+function mousePressed() {
+  if(mousePress = true);
+    birb.flap();
+    
+}
+
+function isHit(){
   for (let i = 0; i < pipes.length; i++){
     thisPipe = pipes[i]
     if (thisPipe.x <= 150 && thisPipe.x >= 50){
@@ -137,17 +156,5 @@ function draw() {
       rect( 450,50,50,50)
     }
     
-    
   }
- 
-  birb.draw();
-  pipes.forEach(pipe => pipe.draw());
-  mousePress = false;
 }
-
-function mousePressed() {
-  if(mousePress = true);
-    birb.flap();
-    
-}
-
