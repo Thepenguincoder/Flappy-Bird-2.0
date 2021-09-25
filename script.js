@@ -1,6 +1,6 @@
 class Birb{
   
-  constructor(x, y, w, h, v, a, c, cd) {
+  constructor(x, y, w, h, v, a, c) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -8,7 +8,7 @@ class Birb{
     this.v = v;
     this.a = a;
     this.c = c; 
-    this.cd = cd;
+    this.cd = 0;
   }
 
   flap(){
@@ -89,8 +89,6 @@ function setup() {
   createCanvas(500, 500);
   timer = 30;
   dis = 150;
-  cd = 0
-  h = 0
   pipeCounter = 0
   gameWinLength = 5
   gameStop = false
@@ -98,7 +96,7 @@ function setup() {
   gameWon = false
 
 
-  birb = new Birb(100, 50, 50, 50, 1, 1.05, "white", cd)
+  birb = new Birb(100, 50, 50, 50, 1, 1.05, "white")
 }
 
 
