@@ -12,7 +12,7 @@ class Birb{
   }
 
   flap(){
-    this.cd = 6;//should be 8
+    this.cd = 7;//should be 8
     this.v = 1;
     flap.play()
   }
@@ -42,6 +42,11 @@ class Birb{
         this.y = 0;
       }
     }
+
+    if ((this.y + this.h) >= 500){
+      gameStop = true
+    }
+
   }
 }
 
@@ -87,7 +92,7 @@ function setup() {
   cd = 0
   h = 0
   pipeCounter = 0
-  gameWinLength = 3
+  gameWinLength = 5
   gameStop = false
   gameStart = false
   gameWon = false
