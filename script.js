@@ -72,6 +72,8 @@ function preload(){
   img1 = loadImage('imgs/birb21.png');
   img2 = loadImage('imgs/treeTrunk.jpg');
   img3 = loadImage('imgs/forest-day.png');
+  img4 = loadImage('imgs/youWinPixelArt.jpg');
+  img5 = loadImage('imgs/deathScreen.jpg');
   flap = loadSound('sounds/flap.mp3');
   //song = loadSound('sounds/ofortuna.mp3');
 }
@@ -103,7 +105,7 @@ function draw() {
   } else if (gameStart == false){
     gameStartMenu()
   } else if(gameStop == true) {
-    gameEndMenu()
+    gameLostMenu()
   } else if (gameWon == true){
     gameWonMenu()
   }
@@ -166,12 +168,18 @@ function gameStartMenu(){
   background(img3)
 }
 
-function gameEndMenu(){
-  background(img1)
+function gameLostMenu(){
+  background(img5)
+  textSize(32)
+  fill(255)
+  text("Press any key to retry", 100, 400)
 }
 
 function gameWonMenu(){
-  background(img2)
+  background(img4)
+  textSize(32)
+  fill(255)
+  text("Press any key to restart", 90, 420)
 }
 
 
