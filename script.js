@@ -1,6 +1,6 @@
 class Birb{
   
-  constructor(x, y, w, h, v, a, c, cd, mousePress) {
+  constructor(x, y, w, h, v, a, c, cd) {
     this.x = x;
     this.y = y;
     this.w = w;
@@ -9,12 +9,10 @@ class Birb{
     this.a = a;
     this.c = c; 
     this.cd = cd;
-    this.mousePress = mousePress;
   }
 
-
   flap(){
-    this.cd = 6;
+    this.cd = 6;//should be 8
     this.v = 1;
     flap.play()
   }
@@ -26,16 +24,8 @@ class Birb{
     
     image(img1, this.x, this.y, this.w, this.h);
     
-    
     if (this.v < 15){
       this.v = this.v * this.a;
-    }
-
-
-
-    if (mousePress === true){
-      this.cd = 8;
-      this.v = 1;
     }
 
     if (this.cd > 0){
@@ -94,26 +84,28 @@ function setup() {
   dis = 150;
   cd = 0
   h = 0
-  mousePress = false;
+  pipeCounter = 0
+  gameWinLength = 3
   gameStop = false
   gameStart = false
+  gameWon = false
 
 
-  birb = new Birb(100, 50, 50, 50, 1, 1.05, "white", cd, mousePress)
-  //pipe = new Pipes(500, 150, 50, dis, "green")
-  //pipes.push(pipe);
+  birb = new Birb(100, 50, 50, 50, 1, 1.05, "white", cd)
 }
 
 
 
 
 function draw() {
-  if (gameStop == false && gameStart == true){
+  if (gameStop == false && gameStart == true && gameWon == false){
     mainGame()
   } else if (gameStart == false){
     gameStartMenu()
   } else if(gameStop == true) {
     gameEndMenu()
+  } else if (gameWon == true){
+    gameWonMenu()
   }
 }
 
@@ -121,7 +113,7 @@ function draw() {
 
 
 function mousePressed() {
-  if (gameStop == false){
+  if (gameStop == false && gameStart == true && gameWon == false){
     birb.flap();
   } 
 }
@@ -136,6 +128,11 @@ function keyPressed(){
     gameStart = true
     pipes = []
   }
+  if (gameWon == true){
+    gameWon = false
+    pipes = []
+    setup()
+  } 
 }
 
 function isHit(){
@@ -155,11 +152,38 @@ function isHit(){
 
 function mainGame(){
   background(img3);  
-  if (timer <= 0){
+  getPipes();
+
+  isHit()
+
+  birb.draw();
+  pipes.forEach(pipe => pipe.draw());
+
+}
+
+
+function gameStartMenu(){
+  background(img3)
+}
+
+function gameEndMenu(){
+  background(img1)
+}
+
+function gameWonMenu(){
+  background(img2)
+}
+
+
+function getPipes(){
+  if (timer <= 0 && pipeCounter < gameWinLength){
     let h = Math.floor(Math.random() * 300) + 25;
     pipe = new Pipes(500, h, 50, dis, "green")
     pipes.push(pipe);
     timer = 120;
+    pipeCounter += 1;
+  } else if (pipeCounter >= gameWinLength && pipe.x == 0){
+    gameWon = true
   } else {
     timer -= 1;
   }
@@ -167,19 +191,4 @@ function mainGame(){
   if (pipes.length >= 5) {
     pipes.splice(0,1)
   }
-
-  isHit()
-
-  birb.draw();
-  pipes.forEach(pipe => pipe.draw());
-  mousePress = false;
-}
-
-
-function gameStartMenu( ){
-  background(img3)
-}
-
-function gameEndMenu(){
-  background(img1)
 }
