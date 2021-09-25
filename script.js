@@ -90,7 +90,7 @@ function setup() {
   timer = 30;
   dis = 150;
   pipeCounter = 0
-  gameWinLength = 5
+  gameWinLength = 25
   gameStop = false
   gameStart = false
   gameWon = false
@@ -152,40 +152,6 @@ function isHit(){
 }
 
 
-
-
-
-function mainGame(){
-  background(img3);  
-  getPipes();
-
-  isHit()
-
-  birb.draw();
-  pipes.forEach(pipe => pipe.draw());
-
-}
-
-
-function gameStartMenu(){
-  background(img3)
-}
-
-function gameLostMenu(){
-  background(img5)
-  textSize(32)
-  fill(255)
-  text("Press any key to retry", 100, 400)
-}
-
-function gameWonMenu(){
-  background(img4)
-  textSize(32)
-  fill(255)
-  text("Press any key to restart", 90, 420)
-}
-
-
 function getPipes(){
   if (timer <= 0 && pipeCounter < gameWinLength){
     let h = Math.floor(Math.random() * 300) + 25;
@@ -203,3 +169,38 @@ function getPipes(){
     pipes.splice(0,1)
   }
 }
+
+
+function mainGame(){
+  background(img3);  
+  getPipes();
+
+  isHit()
+
+  birb.draw();
+  pipes.forEach(pipe => pipe.draw());
+
+}
+
+function gameStartMenu(){
+  background(0)
+  textSize(32)
+  fill(255)
+  text("Press any key to start", 90, 250)
+}
+
+function gameLostMenu(){
+  background(img5)
+  textSize(32)
+  fill(255)
+  text("Press any key to retry", 100, 400)
+}
+
+function gameWonMenu(){
+  background(img4)
+  textSize(32)
+  fill(255)
+  text("Press any key to restart", 90, 420)
+}
+
+
