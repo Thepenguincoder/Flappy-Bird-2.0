@@ -80,17 +80,20 @@ function preload(){
   img4 = loadImage('imgs/youWinPixelArt.jpg');
   img5 = loadImage('imgs/deathScreen.jpg');
   flap = loadSound('sounds/flap.mp3');
-  //song = loadSound('sounds/ofortuna.mp3');
+  song = loadSound('sounds/ofortuna.mp3');
 }
+
+var highscore = 0;
 
 function setup() {
   flap.setVolume(10);
-  //song.loop();
+  song.play();
   createCanvas(500, 500);
   timer = 30;
   dis = 150;
   pipeCounter = 0
-  gameWinLength = 25
+  gameWinLength = 2
+  score = 0
   gameStop = false
   gameStart = false
   gameWon = false
@@ -127,6 +130,7 @@ function keyPressed(){
   if (gameStop == true){
     gameStop = false
     pipes = []
+    song.stop();
     setup()
   } 
   if (gameStart == false){
@@ -136,6 +140,7 @@ function keyPressed(){
   if (gameWon == true){
     gameWon = false
     pipes = []
+    song.stop();
     setup()
   } 
 }
@@ -151,6 +156,15 @@ function isHit(){
   }
 }
 
+function getScore(){
+  for (let i = 0; i < pipes.length; i++){
+    thisPipe = pipes[i]
+    if (thisPipe.x == 100){
+      score += 1
+    }
+  }
+}
+
 
 function getPipes(){
   if (timer <= 0 && pipeCounter < gameWinLength){
@@ -159,7 +173,7 @@ function getPipes(){
     pipes.push(pipe);
     timer = 120;
     pipeCounter += 1;
-  } else if (pipeCounter >= gameWinLength && pipe.x == 0){
+  } else if (pipeCounter >= gameWinLength && pipe.x == -50){
     gameWon = true
   } else {
     timer -= 1;
@@ -176,6 +190,11 @@ function mainGame(){
   getPipes();
 
   isHit()
+  getScore()
+  textSize(32)
+  fill("black")
+  text(score, 250, 50, "black")
+
 
   birb.draw();
   pipes.forEach(pipe => pipe.draw());
@@ -193,7 +212,12 @@ function gameLostMenu(){
   background(img5)
   textSize(32)
   fill(255)
+  if (score > highscore){
+    highscore = score;
+  }
   text("Press any key to retry", 100, 400)
+  text("Score: " + score, 160, 50)
+  text("Highscore: " + highscore, 160, 100)
 }
 
 function gameWonMenu(){
@@ -201,6 +225,11 @@ function gameWonMenu(){
   textSize(32)
   fill(255)
   text("Press any key to restart", 90, 420)
+  if (score > highscore){
+    highscore = score;
+  }
+  text("Score: " + score, 100, 50)
+  text("Highscore: " + highscore, 100, 100)
 }
 
 
