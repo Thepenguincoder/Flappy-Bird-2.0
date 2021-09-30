@@ -71,7 +71,7 @@ class Pipes {
   } 
 }
 
-var pipes = [];
+
 
 function preload(){
   img1 = loadImage('imgs/birb21.png');
@@ -79,31 +79,37 @@ function preload(){
   img3 = loadImage('imgs/forest-day.png');
   img4 = loadImage('imgs/youWinPixelArt.jpg');
   img5 = loadImage('imgs/deathScreen.jpg');
+  img6 = loadImage('imgs/startscreen.jpg');
   flap = loadSound('sounds/flap.mp3');
-  song = loadSound('sounds/ofortuna.mp3');
+  song = loadSound('sounds/shovelknight.mp3');
 }
 
-var highscore = 0;
+var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], birb = new Birb(100, 50, 50, 50, 1, 1.05, "white")
 
 function setup() {
-  flap.setVolume(10);
-  song.play();
+  flap.setVolume(2);
+  song.setVolume(0.1);
+  song.loop();
   createCanvas(500, 500);
   timer = 30;
-  dis = 150;
-  pipeCounter = 0
+  dis = 150; 
   gameWinLength = 2
+}
+
+function newGame() {
+  pipeCounter = 0
   score = 0
+  pipes = []
+  //highsocre = getItem("highscore")
+  //if (highscore == null){
+    //highscore = 0
+  //}
   gameStop = false
   gameStart = false
   gameWon = false
 
-
   birb = new Birb(100, 50, 50, 50, 1, 1.05, "white")
 }
-
-
-
 
 function draw() {
   if (gameStop == false && gameStart == true && gameWon == false){
@@ -119,7 +125,6 @@ function draw() {
 
 
 
-
 function mousePressed() {
   if (gameStop == false && gameStart == true && gameWon == false){
     birb.flap();
@@ -129,9 +134,8 @@ function mousePressed() {
 function keyPressed(){
   if (gameStop == true){
     gameStop = false
-    pipes = []
-    song.stop();
-    setup()
+    //storeItem("highscore", highscore);
+    newGame()
   } 
   if (gameStart == false){
     gameStart = true
@@ -139,9 +143,8 @@ function keyPressed(){
   }
   if (gameWon == true){
     gameWon = false
-    pipes = []
-    song.stop();
-    setup()
+    //storeItem("highscore", highscore);
+    newGame()
   } 
 }
 
@@ -165,7 +168,6 @@ function getScore(){
   }
 }
 
-
 function getPipes(){
   if (timer <= 0 && pipeCounter < gameWinLength){
     let h = Math.floor(Math.random() * 300) + 25;
@@ -185,6 +187,7 @@ function getPipes(){
 }
 
 
+
 function mainGame(){
   background(img3);  
   getPipes();
@@ -195,17 +198,17 @@ function mainGame(){
   fill("black")
   text(score, 250, 50, "black")
 
-
   birb.draw();
   pipes.forEach(pipe => pipe.draw());
 
 }
 
 function gameStartMenu(){
-  background(0)
+  background(img6)
   textSize(32)
-  fill(255)
-  text("Press any key to start", 90, 250)
+  //fill(255)
+  fill("black")
+  text("Press any key to start", 95, 400)
 }
 
 function gameLostMenu(){
