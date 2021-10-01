@@ -20,7 +20,7 @@ class Birb{
   draw() {
     fill(this.c);
     //noStroke();
-    //rect(this.x, this.y, this.w, this.h);
+    rect(this.x, this.y, this.w, this.h);
     
     image(img1, this.x, this.y, this.w, this.h);
     
@@ -70,15 +70,14 @@ class Pipes {
     if (hardMode == true){
       
 
-      if (this.h <= 0){
+      if (this.h <= this.v){
         this.v = this.v * -1;
-        this.h = 0;
       } else if (this.h >= (500 - dis)){
         this.v = this.v * -1;
         this.h = 500 - dis;
       }
       this.h += this.v * this.q
-    }
+    } 
 
     this.pipeStart = this.h + this.dis;
     this.pipeLength = height - this.pipeStart;
@@ -115,7 +114,7 @@ function setup() {
   createCanvas(500, 500);
   timer = 30;
   dis = 150; 
-  gameWinLength = 10;
+  gameWinLength = 5;
   hardMode = false;
 }
 
