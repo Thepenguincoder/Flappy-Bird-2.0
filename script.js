@@ -112,7 +112,8 @@ function setup() {
   createCanvas(500, 500);
   timer = 30;
   dis = 150; 
-  gameWinLength = 2
+  gameWinLength = 10;
+  hardMode = false;
 }
 
 function newGame() {
@@ -126,8 +127,6 @@ function newGame() {
   gameStop = false
   gameStart = false
   gameWon = false
-  hardMode = false
-  
   birb = new Birb(100, 50, 50, 50, 1, 1.05, "white")
 }
 
