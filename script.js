@@ -59,34 +59,37 @@ class Pipes {
     this.w = w;
     this.dis = dis;
     this.c = c;
-    this.v = 1
+    this.v = 2;
+    this.q = Math.round(Math.random()) * 2 - 1;
   }
-  
+
   draw() {
-    fill(this.c);
+
+      fill(this.c);
     //noStroke();
-    
     if (hardMode == true){
-      this.h += this.v
+      
 
-      if (this.h <= 150){
-        this.v = this.v * -1
-        this.h = 150
-      } 
-
-      if (this.h >= 350){
-        this.v = this.v * -1
-        this.h = 350
+      if (this.h <= 0){
+        this.v = this.v * -1;
+        this.h = 0;
+      } else if (this.h >= (500 - dis)){
+        this.v = this.v * -1;
+        this.h = 500 - dis;
       }
+      this.h += this.v * this.q
     }
-
 
     this.pipeStart = this.h + this.dis;
     this.pipeLength = height - this.pipeStart;
     image(img2, this.x, 0, this.w, this.h)
     image(img2, this.x, this.pipeStart, this.w, this.pipeLength)
-    this.x -= 2;
     
+    if (hardMode == true){
+      this.x -= 5;
+    }else{
+      this.x -= 2;
+    } 
   } 
 }
 
@@ -103,7 +106,7 @@ function preload(){
   song = loadSound('sounds/shovelknight.mp3');
 }
 
-var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], birb = new Birb(100, 50, 50, 50, 1, 1.05, "white"), hardMode = false
+var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], birb = new Birb(100, 150, 50, 50, 1, 1.05, "white"), hardMode = false
 
 function setup() {
   flap.setVolume(2);
@@ -127,7 +130,7 @@ function newGame() {
   gameStop = false
   gameStart = false
   gameWon = false
-  birb = new Birb(100, 50, 50, 50, 1, 1.05, "white")
+  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white")
 }
 
 function draw() {
@@ -233,7 +236,11 @@ function getPipes(){
     let h = Math.floor(Math.random() * 300) + 25;
     pipe = new Pipes(500, h, 50, dis, "green")
     pipes.push(pipe);
-    timer = 120;
+      if (hardMode == true){
+        timer = 60;
+      }else{
+        timer = 120;
+      }
     pipeCounter += 1;
   } else if (pipeCounter >= gameWinLength && pipe.x == -50){
     gameWon = true
@@ -268,6 +275,7 @@ function gameStartMenu(){
   //fill(255)
   fill("black")
   text("Press space to start", 70, 400)
+  
   if(hardMode == false){
     text("Press E for extreme difficulty", 70, 450)
   } else{
@@ -285,6 +293,7 @@ function gameLostMenu(){
   text("Press space to retry", 100, 450)
   text("Score: " + score, 160, 50)
   text("Highscore: " + highscore, 160, 100)
+  
   if(hardMode == false){
     text("Press E for extreme difficulty", 60, 400)
   } else{
