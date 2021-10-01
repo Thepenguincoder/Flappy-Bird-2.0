@@ -57,17 +57,34 @@ class Pipes {
     this.w = w;
     this.dis = dis;
     this.c = c;
-    this.pipeStart = this.h + this.dis;
-    this.pipeLength = height - this.pipeStart;
+    this.v = 1
   }
   
   draw() {
     fill(this.c);
     //noStroke();
     
+    if (hardMode == true){
+      this.h += this.v
+
+      if (this.h <= 150){
+        this.v = this.v * -1
+        this.h = 150
+      } 
+
+      if (this.h >= 350){
+        this.v = this.v * -1
+        this.h = 350
+      }
+    }
+
+
+    this.pipeStart = this.h + this.dis;
+    this.pipeLength = height - this.pipeStart;
     image(img2, this.x, 0, this.w, this.h)
     image(img2, this.x, this.pipeStart, this.w, this.pipeLength)
     this.x -= 2;
+    
   } 
 }
 
@@ -84,7 +101,7 @@ function preload(){
   song = loadSound('sounds/shovelknight.mp3');
 }
 
-var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], birb = new Birb(100, 50, 50, 50, 1, 1.05, "white")
+var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], birb = new Birb(100, 50, 50, 50, 1, 1.05, "white"), hardMode = false
 
 function setup() {
   flap.setVolume(2);
@@ -107,7 +124,8 @@ function newGame() {
   gameStop = false
   gameStart = false
   gameWon = false
-
+  hardMode = false
+  
   birb = new Birb(100, 50, 50, 50, 1, 1.05, "white")
 }
 
@@ -132,20 +150,61 @@ function mousePressed() {
 }
 
 function keyPressed(){
-  if (gameStop == true){
-    gameStop = false
-    //storeItem("highscore", highscore);
-    newGame()
+  if (keyCode == 32) {
+    if (gameStop == true){
+      gameStop = false
+      //storeItem("highscore", highscore);
+      newGame()
+    } 
+    if (gameStart == false){
+      gameStart = true
+      pipes = []
+    }
+    if (gameWon == true){
+      gameWon = false
+      //storeItem("highscore", highscore);
+      newGame()
+    } 
   } 
-  if (gameStart == false){
-    gameStart = true
-    pipes = []
-  }
-  if (gameWon == true){
-    gameWon = false
-    //storeItem("highscore", highscore);
-    newGame()
+
+  if (keyCode == 69) {
+    if (gameStop == true){
+      gameStop = false
+      //storeItem("highscore", highscore);
+      newGame()
+      hardMode = true
+    } 
+    if (gameStart == false){
+      gameStart = true
+      pipes = []
+      hardMode = true
+    }
+    if (gameWon == true){
+      gameWon = false
+      //storeItem("highscore", highscore);
+      newGame()
+    } 
   } 
+  
+    if (keyCode == 78) {
+      if (gameStop == true){
+        gameStop = false
+        //storeItem("highscore", highscore);
+        newGame()
+        hardMode = false
+      } 
+      if (gameStart == false){
+        gameStart = true
+        pipes = []
+        hardMode = false
+      }
+      if (gameWon == true){
+        gameWon = false
+        //storeItem("highscore", highscore);
+        newGame()
+      } 
+  } 
+
 }
 
 function isHit(){
@@ -200,7 +259,6 @@ function mainGame(){
 
   birb.draw();
   pipes.forEach(pipe => pipe.draw());
-
 }
 
 function gameStartMenu(){
@@ -208,7 +266,12 @@ function gameStartMenu(){
   textSize(32)
   //fill(255)
   fill("black")
-  text("Press any key to start", 95, 400)
+  text("Press space to start", 70, 400)
+  if(hardMode == false){
+    text("Press E for extreme difficulty", 70, 450)
+  } else{
+      text("Press N for normal difficulty", 70, 500)
+    }
 }
 
 function gameLostMenu(){
@@ -218,16 +281,21 @@ function gameLostMenu(){
   if (score > highscore){
     highscore = score;
   }
-  text("Press any key to retry", 100, 400)
+  text("Press space to retry", 100, 450)
   text("Score: " + score, 160, 50)
   text("Highscore: " + highscore, 160, 100)
+  if(hardMode == false){
+    text("Press E for extreme difficulty", 60, 400)
+  } else{
+      text("Press N for normal difficulty", 60, 400)
+    }
 }
 
 function gameWonMenu(){
   background(img4)
   textSize(32)
   fill(255)
-  text("Press any key to restart", 90, 420)
+  text("Press space to restart", 90, 420)
   if (score > highscore){
     highscore = score;
   }
