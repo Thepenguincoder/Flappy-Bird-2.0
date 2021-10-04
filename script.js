@@ -158,8 +158,8 @@ function newGame() {
   gameStop = false
   gameStart = false
   gameWon = false
-  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)
-  life = new Life(100, 100, 50, 50)
+  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)n
+  life = new Life(400, 100, 50, 50)
 }
 
 function draw() {
@@ -174,26 +174,23 @@ function draw() {
   }
 }
 
-function birbDies(){
-  
-}
-
-
-
-
-
 function isHit(){
   for (let i = 0; i < pipes.length; i++){
     thisPipe = pipes[i]
     if (thisPipe.x <= (birb.x + birb.w) && thisPipe.x >= (birb.x - birb.w)){
       if (birb.y <= thisPipe.h || (birb.y + birb.h) >= thisPipe.pipeStart){
-        gameStop = true
+        if (extraLives > 0){
+          extraLives -= 1
+          pipes.splice(thisPipe, 1)
+        } else{
+          gameStop = true
+        }
       }
     }
   }
   if (life.x <= (birb.x + birb.w) && life.x >= (birb.x - birb.w)) {
-    if (birb.y <= life.y && (birb.y + birb.h) >= life.y){
-      //extraLives += 1
+    if (birb.y <= (life.y + life.h) && (birb.y + birb.h) >= life.y){
+      extraLives += 1
       rect(400,50,100,100)
     }
   }
