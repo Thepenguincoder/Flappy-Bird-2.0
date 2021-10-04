@@ -192,9 +192,9 @@ function isHit(){
     }
   }
   if (life.x <= (birb.x + birb.w) && life.x >= (birb.x - birb.w)) {
-    if (birb.y <= life.y || (birb.y + birb.h) >= life.y){
+    if (birb.y <= life.y && (birb.y + birb.h) >= life.y){
       //extraLives += 1
-      gameStop = true
+      rect(400,50,100,100)
     }
   }
 }
