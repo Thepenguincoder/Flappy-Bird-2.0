@@ -179,10 +179,10 @@ function isHit(){
     thisPipe = pipes[i]
     if (thisPipe.x <= (birb.x + birb.w) && thisPipe.x >= (birb.x - birb.w)){
       if (birb.y <= thisPipe.h || (birb.y + birb.h) >= thisPipe.pipeStart){
-        if (extraLives > 0){
+        if (extraLives >= 1){
+          pipes.splice(i, 1)
           extraLives -= 1
-          pipes.splice(thisPipe, 1)
-        } else{
+        } else {
           gameStop = true
         }
       }
@@ -254,6 +254,7 @@ function mainGame(){
   textSize(32)
   fill("black")
   text(score, 250, 50, "black")
+  text(extraLives, 50, 50, "black")
 
   birb.draw();
   if (gotLife == false){
