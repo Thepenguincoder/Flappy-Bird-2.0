@@ -21,7 +21,7 @@ class Birb{
   draw() {
     fill(this.c);
     //noStroke();
-    rect(this.x, this.y, this.w, this.h);
+    //rect(this.x, this.y, this.w, this.h);
     
     image(this.im, this.x, this.y, this.w, this.h);
     
@@ -130,7 +130,7 @@ function preload(){
   song = loadSound('sounds/shovelknight.mp3');
 }
 
-var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], hardMode = false,  extraLives = 0;
+var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], hardMode = false,  extraLives = 0; gotLife = false
 
 function setup() {
   flap.setVolume(2);
@@ -158,7 +158,7 @@ function newGame() {
   gameStop = false
   gameStart = false
   gameWon = false
-  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)n
+  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)
   life = new Life(400, 100, 50, 50)
 }
 
@@ -188,10 +188,11 @@ function isHit(){
       }
     }
   }
-  if (life.x <= (birb.x + birb.w) && life.x >= (birb.x - birb.w)) {
+  if (gotLife == false && life.x <= (birb.x + birb.w) && life.x >= (birb.x - birb.w)) {
     if (birb.y <= (life.y + life.h) && (birb.y + birb.h) >= life.y){
       extraLives += 1
-      rect(400,50,100,100)
+      gotLife = true
+      //rect(400,50,100,100)
     }
   }
 }
@@ -229,6 +230,7 @@ function getPipes(){
 
 function getLives(){
   if (lifeTimer <= 0){
+    gotLife = false
     let y = Math.floor(Math.random() * 300) + 25;
     life = new Life(width, y, 50, 50)
     lifeTimer = 330
@@ -254,7 +256,9 @@ function mainGame(){
   text(score, 250, 50, "black")
 
   birb.draw();
-  life.draw();
+  if (gotLife == false){
+    life.draw();
+  }
   pipes.forEach(pipe => pipe.draw());
 }
 
