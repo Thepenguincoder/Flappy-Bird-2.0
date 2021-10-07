@@ -167,7 +167,7 @@ function newGame() {
   gameStart = false
   gameWon = false
   birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)
-  
+  life = new Life(0, 0, 1, 1)
 }
 
 function draw() {
@@ -264,9 +264,9 @@ function getLives(){
   if (lifeTimer >= 1){
     lifeTimer -= 1
   } else if(lifeTimer <= 0){
-    gotLife = false
-    let y = Math.floor(Math.random() * 300) + 25;
-    life = new Life(width, y, 50, 50)
+      gotLife = false
+      let y = Math.floor(Math.random() * 300) + 25;
+      life = new Life(width, y, 50, 50)
   }
 }
 
