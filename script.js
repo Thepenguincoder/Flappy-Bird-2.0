@@ -130,6 +130,14 @@ function preload(){
   song = loadSound('sounds/shovelknight.mp3');
 }
 
+
+
+
+
+
+
+
+
 var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], hardMode = false,  extraLives = 0; gotLife = false
 
 function setup() {
@@ -138,12 +146,12 @@ function setup() {
   song.loop();
   createCanvas(500, 500);
   timer = 30;
+  lifeTimer = 0
   dis = 150; 
-  lifeTimer = 330
   gameWinLength = 25;
   hardMode = false;
   birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)
-  life = new Life(100, 100, 50, 50)
+  life = new Life(0, 0, 1, 1)
 }
 
 function newGame() {
@@ -159,7 +167,7 @@ function newGame() {
   gameStart = false
   gameWon = false
   birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)
-  life = new Life(400, 100, 50, 50)
+  
 }
 
 function draw() {
@@ -173,6 +181,43 @@ function draw() {
     gameWonMenu()
   }
 }
+
+
+
+
+
+
+
+function getPipes(){
+  if (timer <= 0 && pipeCounter < gameWinLength){
+    let h = Math.floor(Math.random() * 300) + 25;
+    pipe = new Pipes(500, h, 50, dis, "green")
+    pipes.push(pipe);
+      if (hardMode == true){
+        timer = 60;
+      }else{
+        timer = 120;
+      }
+    pipeCounter += 1;
+  } else if (pipeCounter >= gameWinLength && pipe.x == -50){
+    gameWon = true
+  } else {
+    timer -= 1;
+  }
+
+  if (pipes.length >= 5) {
+    pipes.splice(0,1)
+  }
+}
+
+
+
+
+
+
+
+
+
 
 function isHit(){
   for (let i = 0; i < pipes.length; i++){
@@ -206,38 +251,23 @@ function getScore(){
   }
 }
 
-function getPipes(){
-  if (timer <= 0 && pipeCounter < gameWinLength){
-    let h = Math.floor(Math.random() * 300) + 25;
-    pipe = new Pipes(500, h, 50, dis, "green")
-    pipes.push(pipe);
-      if (hardMode == true){
-        timer = 60;
-      }else{
-        timer = 120;
-      }
-    pipeCounter += 1;
-  } else if (pipeCounter >= gameWinLength && pipe.x == -50){
-    gameWon = true
-  } else {
-    timer -= 1;
-  }
 
-  if (pipes.length >= 5) {
-    pipes.splice(0,1)
-  }
-}
+
+
 
 function getLives(){
-  if (lifeTimer <= 0){
+
+  if ((pipeCounter % 3) == 0 ){
+    lifeTimer = 120
+  }
+
+  if (lifeTimer >= 1){
+    lifeTimer -= 1
+  } else if(lifeTimer <= 0){
     gotLife = false
     let y = Math.floor(Math.random() * 300) + 25;
     life = new Life(width, y, 50, 50)
-    lifeTimer = 330
-  } else {
-    lifeTimer -= 1
   }
-
 }
 
 
@@ -253,8 +283,8 @@ function mainGame(){
   getScore()
   textSize(32)
   fill("black")
-  text(score, 250, 50, "black")
-  text(extraLives, 50, 50, "black")
+  text("Score: " + score, 250, 50, "black")
+  text("Lives: " + extraLives, 50, 50, "black")
 
   birb.draw();
   if (gotLife == false){
