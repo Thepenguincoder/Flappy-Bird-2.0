@@ -104,7 +104,6 @@ class Life {
 
 
   draw() {
-
     image(img7, this.x, this.y, this.w, this.h);
 
     if (hardMode == true){
@@ -123,7 +122,7 @@ function preload(){
   img4 = loadImage('imgs/youWinPixelArt.jpg');
   img5 = loadImage('imgs/deathScreen.jpg');
   img6 = loadImage('imgs/startscreen.jpg');
-  img7 = loadImage('imgs/mcegg.png')
+  img7 = loadImage('imgs/McEgg.png')
   img8 = loadImage('imgs/birb21forward.png')
   img9 = loadImage('imgs/birb21upsidedown.png')
   flap = loadSound('sounds/flap.mp3');
@@ -188,6 +187,8 @@ function draw() {
 
 
 
+
+
 function getPipes(){
   if (timer <= 0 && pipeCounter < gameWinLength){
     let h = Math.floor(Math.random() * 300) + 25;
@@ -210,14 +211,29 @@ function getPipes(){
   }
 }
 
+function getLives(){
 
+  if (pipeCounter >= 5  &&  (pipeCounter % 5) == 0 ){
+    gotLife = false
+    let y = Math.floor(Math.random() * 300) + 25;
+    life = new Life((width + 120), y, 50, 50)
+  }
 
+  lifeTimer -= 1
+    
+  if(lifeTimer <= 0){
+    
+  }
+}
 
-
-
-
-
-
+function getScore(){
+  for (let i = 0; i < pipes.length; i++){
+    thisPipe = pipes[i]
+    if (thisPipe.x == 100){
+      score += 1
+    }
+  }
+}
 
 function isHit(){
   for (let i = 0; i < pipes.length; i++){
@@ -242,33 +258,6 @@ function isHit(){
   }
 }
 
-function getScore(){
-  for (let i = 0; i < pipes.length; i++){
-    thisPipe = pipes[i]
-    if (thisPipe.x == 100){
-      score += 1
-    }
-  }
-}
-
-
-
-
-
-function getLives(){
-
-  if ((pipeCounter % 3) == 0 ){
-    lifeTimer = 120
-  }
-
-  if (lifeTimer >= 1){
-    lifeTimer -= 1
-  } else if(lifeTimer <= 0){
-      gotLife = false
-      let y = Math.floor(Math.random() * 300) + 25;
-      life = new Life(width, y, 50, 50)
-  }
-}
 
 
 
@@ -282,15 +271,17 @@ function mainGame(){
   isHit()
   getScore()
   textSize(32)
-  fill("black")
-  text("Score: " + score, 250, 50, "black")
-  text("Lives: " + extraLives, 50, 50, "black")
+  
+  
 
   birb.draw();
   if (gotLife == false){
     life.draw();
   }
   pipes.forEach(pipe => pipe.draw());
+  fill("black")
+  text("Score: " + score, 250, 50, "black")
+  text("Lives: " + extraLives, 50, 50, "black")
 }
 
 function gameStartMenu(){
