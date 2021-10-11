@@ -21,7 +21,7 @@ class Birb{
   draw() {
     fill(this.c);
     //noStroke();
-    //rect(this.x, this.y, this.w, this.h);
+    rect(this.x, this.y, (this.w -5), (this.h-5));
     
     image(this.im, this.x, this.y, this.w, this.h);
     
@@ -45,7 +45,7 @@ class Birb{
     }
 
     if ((this.y + this.h) >= 500){
-      gameStop = true
+      gameState = 2
     }
 
   }
@@ -137,10 +137,17 @@ function preload(){
 
 
 
-var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], hardMode = false,  extraLives = 0; gotLife = false
+
+
+
+
+
+
+
+var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], hardMode = false, extraLives = 0,  gotLife = false, gameState = 0;
 
 function setup() {
-  flap.setVolume(2);
+  flap.setVolume(5);
   song.setVolume(0.1);
   song.loop();
   createCanvas(500, 500);
@@ -162,21 +169,18 @@ function newGame() {
   //if (highscore == null){
     //highscore = 0
   //}
-  gameStop = false
-  gameStart = false
-  gameWon = false
   birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)
   life = new Life(0, 0, 1, 1)
 }
 
 function draw() {
-  if (gameStop == false && gameStart == true && gameWon == false){
-    mainGame()
-  } else if (gameStart == false){
+  if (gameState == 0){
     gameStartMenu()
-  } else if(gameStop == true) {
+  } else if (gameState == 1){
+    mainGame()
+  } else if(gameState == 2) {
     gameLostMenu()
-  } else if (gameWon == true){
+  } else if (gameState == 3){
     gameWonMenu()
   }
 }
@@ -244,7 +248,7 @@ function isHit(){
           pipes.splice(i, 1)
           extraLives -= 1
         } else {
-          gameStop = true
+          gameState = 2
         }
       }
     }
@@ -294,7 +298,7 @@ function gameStartMenu(){
   if(hardMode == false){
     text("Press E for extreme difficulty", 70, 450)
   } else{
-      text("Press N for normal difficulty", 70, 500)
+      text("Press N for normal difficulty", 70, 450)
     }
 }
 
@@ -329,13 +333,8 @@ function gameWonMenu(){
 }
 
 
-
-
-
-
-
 function mousePressed() {
-  if (gameStop == false && gameStart == true && gameWon == false){
+  if (gameState == 1){
     birb.flap();
   } 
 }
@@ -343,58 +342,27 @@ function mousePressed() {
 
 function keyPressed(){
   if (keyCode == 32) {
-    if (gameStop == true){
-      gameStop = false
+    if (gameState == 0){
+      gameState = 1
       //storeItem("highscore", highscore);
       newGame()
     } 
-    if (gameStart == false){
-      gameStart = true
-      pipes = []
+    if (gameState == 2){
+      gameState = 1
+      newGame()
     }
-    if (gameWon == true){
-      gameWon = false
+    if (gameState == 3){
+      gameState = 1
       //storeItem("highscore", highscore);
       newGame()
     } 
   } 
 
   if (keyCode == 69) {
-    if (gameStop == true){
-      gameStop = false
-      //storeItem("highscore", highscore);
-      newGame()
-      hardMode = true
-    } 
-    if (gameStart == false){
-      gameStart = true
-      pipes = []
-      hardMode = true
-    }
-    if (gameWon == true){
-      gameWon = false
-      //storeItem("highscore", highscore);
-      newGame()
-    } 
+    hardMode = true
   } 
   
-    if (keyCode == 78) {
-      if (gameStop == true){
-        gameStop = false
-        //storeItem("highscore", highscore);
-        newGame()
-        hardMode = false
-      } 
-      if (gameStart == false){
-        gameStart = true
-        pipes = []
-        hardMode = false
-      }
-      if (gameWon == true){
-        gameWon = false
-        //storeItem("highscore", highscore);
-        newGame()
-      } 
+  if (keyCode == 78) {
+    hardMode = false
   } 
-
 }
