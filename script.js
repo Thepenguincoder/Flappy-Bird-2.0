@@ -21,7 +21,7 @@ class Birb{
   draw() {
     fill(this.c);
     //noStroke();
-    rect(this.x, this.y, (this.w -5), (this.h-5));
+    //rect(this.x, this.y, (this.w -5), (this.h-5));
     
     image(this.im, this.x, this.y, this.w, this.h);
     
@@ -50,8 +50,6 @@ class Birb{
 
   }
 }
-
-
 
 class Pipes {
   constructor(x, h, w, dis, c) {
@@ -93,7 +91,6 @@ class Pipes {
   } 
 }
 
-
 class Life {
   constructor(x, y, w, h) {
     this.x = x;
@@ -101,7 +98,6 @@ class Life {
     this.h = h;
     this.w = w;
   }
-
 
   draw() {
     image(img7, this.x, this.y, this.w, this.h);
@@ -113,7 +109,6 @@ class Life {
     } 
   } 
 }
-
 
 function preload(){
   img1 = loadImage('imgs/birb21.png');
@@ -128,21 +123,6 @@ function preload(){
   flap = loadSound('sounds/flap.mp3');
   song = loadSound('sounds/shovelknight.mp3');
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], hardMode = false, extraLives = 0,  gotLife = false, gameState = 0;
 
@@ -184,14 +164,6 @@ function draw() {
     gameWonMenu()
   }
 }
-
-
-
-
-
-
-
-
 
 function getPipes(){
   if (timer <= 0 && pipeCounter < gameWinLength){
@@ -242,8 +214,8 @@ function getScore(){
 function isHit(){
   for (let i = 0; i < pipes.length; i++){
     thisPipe = pipes[i]
-    if (thisPipe.x <= (birb.x + birb.w) && thisPipe.x >= (birb.x - birb.w)){
-      if (birb.y <= thisPipe.h || (birb.y + birb.h) >= thisPipe.pipeStart){
+    if (thisPipe.x <= (birb.x + (birb.w-5)) && thisPipe.x >= (birb.x - birb.w)){
+      if (birb.y <= thisPipe.h || (birb.y + (birb.h-5)) >= thisPipe.pipeStart){
         if (extraLives >= 1){
           pipes.splice(i, 1)
           extraLives -= 1
@@ -262,12 +234,6 @@ function isHit(){
   }
 }
 
-
-
-
-
-
-
 function mainGame(){
   background(img3);  
   getPipes();
@@ -276,8 +242,6 @@ function mainGame(){
   getScore()
   textSize(32)
   
-  
-
   birb.draw();
   if (gotLife == false){
     life.draw();
@@ -332,13 +296,11 @@ function gameWonMenu(){
   text("Highscore: " + highscore, 100, 100)
 }
 
-
 function mousePressed() {
   if (gameState == 1){
     birb.flap();
   } 
 }
-
 
 function keyPressed(){
   if (keyCode == 32) {
@@ -358,11 +320,19 @@ function keyPressed(){
     } 
   } 
 
-  if (keyCode == 69) {
+  if (keyCode == 69 && gameState != 1) {
     hardMode = true
   } 
   
-  if (keyCode == 78) {
+  if (keyCode == 78 && gameState != 1) {
     hardMode = false
   } 
+
+  if (keyCode == 81 && gameState == 1) {
+    if (hardMode == true) {
+      hardMode = false
+    } else {
+      hardMode = true
+    }
+  }
 }
