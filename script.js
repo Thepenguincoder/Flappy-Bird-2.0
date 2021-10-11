@@ -303,17 +303,15 @@ function mousePressed() {
 }
 
 function keyPressed(){
-  if (keyCode == 32) {
+  if (keyCode == 32 || keyCode == 13) {
     if (gameState == 0){
       gameState = 1
       //storeItem("highscore", highscore);
       newGame()
-    } 
-    if (gameState == 2){
+    } else if (gameState == 2){
       gameState = 1
       newGame()
-    }
-    if (gameState == 3){
+    } else if (gameState == 3){
       gameState = 1
       //storeItem("highscore", highscore);
       newGame()
