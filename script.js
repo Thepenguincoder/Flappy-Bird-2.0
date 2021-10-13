@@ -15,7 +15,7 @@ class Birb{
   flap(){
     this.cd = 7;
     this.v = 1;
-    flap.play()
+    flap.play();
   }
 
   draw() {
@@ -45,7 +45,10 @@ class Birb{
     }
 
     if ((this.y + this.h) >= 500){
-      gameState = 2
+      if (gameState == 1){
+        wasted.play();
+      }
+      gameState = 2;
     }
 
   }
@@ -117,11 +120,12 @@ function preload(){
   img4 = loadImage('imgs/youWinPixelArt.jpg');
   img5 = loadImage('imgs/deathScreen.jpg');
   img6 = loadImage('imgs/startscreen.jpg');
-  img7 = loadImage('imgs/McEgg.png')
-  img8 = loadImage('imgs/birb21forward.png')
-  img9 = loadImage('imgs/birb21upsidedown.png')
+  img7 = loadImage('imgs/McEgg.png');
+  img8 = loadImage('imgs/birb21forward.png');
+  img9 = loadImage('imgs/birb21upsidedown.png');
   flap = loadSound('sounds/flap.mp3');
   song = loadSound('sounds/shovelknight.mp3');
+  wasted = loadSound('sounds/wasted.mp3');
 }
 
 var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCounter = 0, score = 0, pipes = [], hardMode = false, extraLives = 0,  gotLife = false, gameState = 0;
@@ -129,28 +133,25 @@ var highscore = 0, gameStop = false, gameStart = false, gameWon = false, pipeCou
 function setup() {
   flap.setVolume(5);
   song.setVolume(0.1);
+  wasted.setVolume(1);
   song.loop();
   createCanvas(500, 500);
   timer = 30;
-  lifeTimer = 0
+  lifeTimer = 0;
   dis = 150; 
   gameWinLength = 25;
   hardMode = false;
-  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)
-  life = new Life(0, 0, 1, 1)
+  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1);
+  life = new Life(0, 0, 1, 1);
 }
 
 function newGame() {
-  pipeCounter = 0
-  score = 0
-  extraLives = 0
-  pipes = []
-  //highsocre = getItem("highscore")
-  //if (highscore == null){
-    //highscore = 0
-  //}
-  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1)
-  life = new Life(0, 0, 1, 1)
+  pipeCounter = 0;
+  score = 0;
+  extraLives = 0;
+  pipes = [];
+  birb = new Birb(100, 150, 50, 50, 1, 1.05, "white", img1);
+  life = new Life(0, 0, 1, 1);
 }
 
 function draw() {
@@ -220,6 +221,9 @@ function isHit(){
           pipes.splice(i, 1)
           extraLives -= 1
         } else {
+          if (gameState == 1) {
+            wasted.play()
+          }
           gameState = 2
         }
       }
@@ -229,7 +233,6 @@ function isHit(){
     if (birb.y <= (life.y + life.h) && (birb.y + birb.h) >= life.y){
       extraLives += 1
       gotLife = true
-      //rect(400,50,100,100)
     }
   }
 }
@@ -255,7 +258,6 @@ function mainGame(){
 function gameStartMenu(){
   background(img6)
   textSize(32)
-  //fill(255)
   fill("black")
   text("Press space to start", 70, 400)
   
@@ -306,14 +308,13 @@ function keyPressed(){
   if (keyCode == 32 || keyCode == 13) {
     if (gameState == 0){
       gameState = 1
-      //storeItem("highscore", highscore);
       newGame()
     } else if (gameState == 2){
       gameState = 1
+      wasted.stop()
       newGame()
     } else if (gameState == 3){
       gameState = 1
-      //storeItem("highscore", highscore);
       newGame()
     } 
   } 
